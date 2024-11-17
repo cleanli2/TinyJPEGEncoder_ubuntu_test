@@ -2,6 +2,7 @@ include ../Makefile.inc
 
 TARGETS = \
 	convert \
+	yuv640x480_convert \
 	test_buffer \
 	test_image_chunk \
 	$(NULL)
