@@ -4,6 +4,42 @@
 #include <string.h>
 #include "tiny_jpeg.h"
 
+void mem_print(const char*buf, uint32_t ct_start, uint32_t len)
+{
+    const char*line_stt = buf;
+    uint32_t left=len, line_len;
+
+    printf("\nMemShow Start:");
+    while(left){
+        int j, li;
+        line_len = left>16?16:left;
+        li=line_len;
+        printf("\n%08x: ", ct_start);
+        j=0;
+        while(li--){
+            printf("%02x",line_stt[j]&0xff);
+            printf(j == 7 ? "-":" ");
+            j++;
+        }
+        li=line_len;
+        j=0;
+        printf(" ");
+        while(li--){
+            if(line_stt[j]>=0x20 && line_stt[j]<0x7f){
+                printf("%c", line_stt[j]);
+            }
+            else{
+                printf("_");
+            }
+            j++;
+        }
+        left-=line_len;
+        line_stt+=line_len;
+        ct_start+=line_len;
+    }
+    printf("\nMemShow End:\n");
+}
+
 
 #define prt_var(x) printf(#x"=%d\n", x)
 uint8_t   ycbcr_image[640*480*2];
@@ -43,14 +79,14 @@ int main(int argc, char **argv)
 
   tjpeg_init(&processor, width, height);
 
-  //tjpeg_feed_data(&processor, width, height, yuvbuf);
-  tjpeg_feed_data(&processor, width, height, ycbcr_image);
+  tjpeg_feed_data(&processor, width, height, yuvbuf);
+  //tjpeg_feed_data(&processor, width, height, ycbcr_image);
 
   for (int i = 0; i < 1; ++i) {
 
     do {
-      //memcpy(yuvbuf, ycbcr_image_p, 640*2*8);
-      //ycbcr_image_p+=640*2*8;
+      memcpy(yuvbuf, ycbcr_image_p, 640*2*8);
+      ycbcr_image_p+=640*2*8;
       bytes = tjpeg_write(&processor, output_image, 8192);
       fwrite(output_image, bytes, 1, output_file);
       fflush(output_file);

@@ -22,7 +22,7 @@ typedef struct _tjpeg_image_chunk_t {
   void tjpeg_image_chunk_copy_cr(tjpeg_image_chunk_t *chunk, int16_t *destination);
   void tjpeg_image_chunk_copy_cb(tjpeg_image_chunk_t *chunk, int16_t *destination);
 
-//#define LIMITED_INPUT_BUFF
+#define LIMITED_INPUT_BUFF
 
 #define _TJPEG_IMAGE_CHUNK_
 #endif

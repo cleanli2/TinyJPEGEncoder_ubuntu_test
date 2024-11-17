@@ -6,6 +6,7 @@
 #define prt_line printf("%d:%s\n", __LINE__, __func__)
 #define prt_var(x) printf(#x"=%d\n", x)
 
+void mem_print(const char*buf, uint32_t ct_start, uint32_t len);
 void tjpeg_image_chunk_init(tjpeg_image_chunk_t *ic, uint8_t *data, int width, int height)
 {
   assert(ic != NULL);
@@ -45,6 +46,9 @@ void tjpeg_image_chunk_copy_y1(tjpeg_image_chunk_t *ic, int16_t *destination)
   prt_line;
   prt_var(ic->y_pos);
   assert(ic != NULL);
+
+  if(ic->y_pos==8)
+  mem_print(base, 0, 1280*8);
 
   for (uint8_t y = 8; y; --y) {
     pointer = base;
