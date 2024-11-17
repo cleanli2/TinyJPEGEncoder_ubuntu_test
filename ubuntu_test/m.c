@@ -15,6 +15,7 @@ int main(int argc, char **argv)
 
   int       width, height, offset;
   uint8_t   *input_image;
+  uint8_t   *ycbcr_image_p=ycbcr_image;
   uint8_t   output_image[0xffff];
   int       file_size = 0;
   int       bytes;
@@ -42,11 +43,14 @@ int main(int argc, char **argv)
 
   tjpeg_init(&processor, width, height);
 
+  //tjpeg_feed_data(&processor, width, height, yuvbuf);
   tjpeg_feed_data(&processor, width, height, ycbcr_image);
 
   for (int i = 0; i < 1; ++i) {
 
     do {
+      //memcpy(yuvbuf, ycbcr_image_p, 640*2*8);
+      //ycbcr_image_p+=640*2*8;
       bytes = tjpeg_write(&processor, output_image, 8192);
       fwrite(output_image, bytes, 1, output_file);
       fflush(output_file);
