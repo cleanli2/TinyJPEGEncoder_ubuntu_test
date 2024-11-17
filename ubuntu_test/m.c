@@ -45,7 +45,7 @@ void mem_print(const char*buf, uint32_t ct_start, uint32_t len)
 #define prt_var(x) printf(#x"=%d\n", x)
 uint8_t   ycbcr_image[640*480*2];
 uint8_t   yuvbuf[640*8*2];
-uint8_t   output_image[8196];
+uint8_t   output_image[2048];
 uint8_t   *ycbcr_image_p=ycbcr_image;
 int main(int argc, char **argv)
 {
@@ -74,6 +74,7 @@ int main(int argc, char **argv)
   output_image[header->image_width_offset + 1] = (uint8_t) (width & 0xff);
   output_image[header->image_height_offset] = (uint8_t) (height >> 8);
   output_image[header->image_height_offset + 1] = (uint8_t) (height & 0xff);
+#if 0
   ycbcr_image[640*8*2]=0x55;
   ycbcr_image[640*8*2+1]=0x56;
   ycbcr_image[640*8*2+2]=0x57;
@@ -82,6 +83,7 @@ int main(int argc, char **argv)
   ycbcr_image[640*8*4-2]=0xa9;
   ycbcr_image[640*8*4-3]=0xa8;
   ycbcr_image[640*8*4-4]=0xa7;
+#endif
   file_size = header->length;
 
   fwrite(output_image, header->length, 1, output_file);
@@ -98,7 +100,7 @@ int main(int argc, char **argv)
   for (int i = 0; i < 1; ++i) {
 
     do {
-      bytes = tjpeg_write(&processor, output_image, 8192);
+      bytes = tjpeg_write(&processor, output_image, 2048);
       fwrite(output_image, bytes, 1, output_file);
       fflush(output_file);
       file_size += bytes;
@@ -115,6 +117,8 @@ void update_yuvbuf()
 {
       memcpy(yuvbuf, ycbcr_image_p, 640*2*8);
       ycbcr_image_p+=640*2*8;
+#if 0
       printf("===%02x %02x %02x %02x\n", yuvbuf[0], yuvbuf[1],yuvbuf[2], yuvbuf[3]);
       printf("===%02x %02x %02x %02x\n", yuvbuf[640*8*2-1], yuvbuf[640*8*2-2],yuvbuf[640*8*2-3], yuvbuf[640*8*2-4]);
+#endif
 }

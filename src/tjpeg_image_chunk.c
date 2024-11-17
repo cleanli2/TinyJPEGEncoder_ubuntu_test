@@ -48,6 +48,7 @@ void tjpeg_image_chunk_copy_y1(tjpeg_image_chunk_t *ic, int16_t *destination)
 
   assert(ic != NULL);
 
+#if 0
   prt_line;
   prt_var(ic->y_pos);
   prt_var(ic->x_pos);
@@ -59,7 +60,7 @@ void tjpeg_image_chunk_copy_y1(tjpeg_image_chunk_t *ic, int16_t *destination)
   prt_var(ic->data + 2 * (ic->x_pos + ic->y_pos * ic->width));
   if(ic->y_pos==8)
   mem_print(base, base, 1280*8);
-
+#endif
   for (uint8_t y = 8; y; --y) {
     pointer = base;
 
@@ -85,8 +86,10 @@ void tjpeg_image_chunk_copy_y2(tjpeg_image_chunk_t *ic, int16_t *destination)
 
   assert(ic != NULL);
 
+#if 0
   prt_line;
   prt_var(ic->y_pos);
+#endif
   for (uint8_t y = 8; y; --y) {
     pointer = base;
 
@@ -112,8 +115,10 @@ void tjpeg_image_chunk_copy_cr(tjpeg_image_chunk_t *ic, int16_t *destination)
 
   assert(ic != NULL);
 
+#if 0
   prt_line;
   prt_var(ic->y_pos);
+#endif
   for (uint8_t y = 8; y; --y) {
     pointer = base;
 
@@ -139,8 +144,10 @@ void tjpeg_image_chunk_copy_cb(tjpeg_image_chunk_t *ic, int16_t *destination)
 
   assert(ic != NULL);
 
+#if 0
   prt_line;
   prt_var(ic->y_pos);
+#endif
   for (uint8_t y = 8; y; --y) {
     pointer = base;
 
@@ -152,4 +159,10 @@ void tjpeg_image_chunk_copy_cb(tjpeg_image_chunk_t *ic, int16_t *destination)
 
     base += 2 * ic->width;
   }
+}
+
+#define WEAK __attribute__ ((weak))           
+__attribute__ ((used))
+void WEAK update_yuvbuf()
+{
 }
