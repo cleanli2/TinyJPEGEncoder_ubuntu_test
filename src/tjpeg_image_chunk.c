@@ -28,6 +28,9 @@ bool tjpeg_image_chunk_next_block(tjpeg_image_chunk_t *ic)
   if (ic->x_pos >= ic->width) {
     ic->y_pos += 8;
     ic->x_pos = 0;
+#ifdef LIMITED_INPUT_BUFF
+    update_yuvbuf();
+#endif
   }
 
   return (ic->y_pos < ic->height);
@@ -43,12 +46,19 @@ void tjpeg_image_chunk_copy_y1(tjpeg_image_chunk_t *ic, int16_t *destination)
 #endif
   uint8_t *pointer = NULL;
 
-  prt_line;
-  prt_var(ic->y_pos);
   assert(ic != NULL);
 
+  prt_line;
+  prt_var(ic->y_pos);
+  prt_var(ic->x_pos);
+  prt_var(ic->data);
+  prt_var(ic->data+1);
+  prt_var(base);
+  prt_var((ic->x_pos + ic->y_pos * ic->width));
+  prt_var(2 * (ic->x_pos + ic->y_pos * ic->width));
+  prt_var(ic->data + 2 * (ic->x_pos + ic->y_pos * ic->width));
   if(ic->y_pos==8)
-  mem_print(base, 0, 1280*8);
+  mem_print(base, base, 1280*8);
 
   for (uint8_t y = 8; y; --y) {
     pointer = base;
