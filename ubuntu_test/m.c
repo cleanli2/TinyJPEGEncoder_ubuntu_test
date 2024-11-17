@@ -5,6 +5,7 @@
 #include "tiny_jpeg.h"
 
 
+#define prt_var(x) printf(#x"=%d\n", x)
 uint8_t   ycbcr_image[640*480*2];
 int main(int argc, char **argv)
 {
@@ -28,6 +29,7 @@ int main(int argc, char **argv)
   FILE* output_file = fopen(argv[2], "wb");
 
   header = tjpeg_get_header();
+  prt_var(header->length);
   memcpy(output_image, header->data, header->length);
   output_image[header->image_width_offset] = (uint8_t) (width >> 8);
   output_image[header->image_width_offset + 1] = (uint8_t) (width & 0xff);
