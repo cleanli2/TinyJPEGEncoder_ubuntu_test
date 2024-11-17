@@ -7,3 +7,8 @@ test/profile/*.png
 test/profile/*.out
 test/profile/*.txt
 TinyJPEG.geany
+*.o
+*.d
+*.out
+cscope.files
+tags
