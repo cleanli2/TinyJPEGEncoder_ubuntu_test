@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "tiny_jpeg.h"
+#include "tjpeg_image_chunk.h"
 
 void mem_print(const char*buf, uint32_t ct_start, uint32_t len)
 {
@@ -79,14 +80,19 @@ int main(int argc, char **argv)
 
   tjpeg_init(&processor, width, height);
 
+#ifndef LIMITED_INPUT_BUFF
+  tjpeg_feed_data(&processor, width, height, ycbcr_image);
+#else
   tjpeg_feed_data(&processor, width, height, yuvbuf);
-  //tjpeg_feed_data(&processor, width, height, ycbcr_image);
+#endif
 
   for (int i = 0; i < 1; ++i) {
 
     do {
+#ifdef LIMITED_INPUT_BUFF
       memcpy(yuvbuf, ycbcr_image_p, 640*2*8);
       ycbcr_image_p+=640*2*8;
+#endif
       bytes = tjpeg_write(&processor, output_image, 8192);
       fwrite(output_image, bytes, 1, output_file);
       fflush(output_file);
