@@ -7,6 +7,7 @@
 
 #define prt_var(x) printf(#x"=%d\n", x)
 uint8_t   ycbcr_image[640*480*2];
+uint8_t   yuvbuf[640*8*2];
 int main(int argc, char **argv)
 {
   jpeg_proc_t               processor;

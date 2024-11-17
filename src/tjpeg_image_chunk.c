@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#define prt_line printf("%d:%s\n", __LINE__, __func__)
+#define prt_var(x) printf(#x"=%d\n", x)
 
 void tjpeg_image_chunk_init(tjpeg_image_chunk_t *ic, uint8_t *data, int width, int height)
 {
@@ -33,9 +35,15 @@ bool tjpeg_image_chunk_next_block(tjpeg_image_chunk_t *ic)
 
 void tjpeg_image_chunk_copy_y1(tjpeg_image_chunk_t *ic, int16_t *destination)
 {
+#ifndef LIMITED_INPUT_BUFF
   uint8_t *base = ic->data + 2 * (ic->x_pos + ic->y_pos * ic->width);
+#else
+  uint8_t *base = ic->data + 2 * (ic->x_pos);
+#endif
   uint8_t *pointer = NULL;
 
+  prt_line;
+  prt_var(ic->y_pos);
   assert(ic != NULL);
 
   for (uint8_t y = 8; y; --y) {
@@ -54,11 +62,17 @@ void tjpeg_image_chunk_copy_y1(tjpeg_image_chunk_t *ic, int16_t *destination)
 
 void tjpeg_image_chunk_copy_y2(tjpeg_image_chunk_t *ic, int16_t *destination)
 {
+#ifndef LIMITED_INPUT_BUFF
   uint8_t *base = ic->data + 2 * (ic->x_pos + 8 + ic->y_pos * ic->width);
+#else
+  uint8_t *base = ic->data + 2 * (ic->x_pos + 8);
+#endif
   uint8_t *pointer = NULL;
 
   assert(ic != NULL);
 
+  prt_line;
+  prt_var(ic->y_pos);
   for (uint8_t y = 8; y; --y) {
     pointer = base;
 
@@ -75,11 +89,17 @@ void tjpeg_image_chunk_copy_y2(tjpeg_image_chunk_t *ic, int16_t *destination)
 
 void tjpeg_image_chunk_copy_cr(tjpeg_image_chunk_t *ic, int16_t *destination)
 {
+#ifndef LIMITED_INPUT_BUFF
   uint8_t *base = ic->data + 2 * (ic->x_pos + ic->y_pos * ic->width) + 3;
+#else
+  uint8_t *base = ic->data + 2 * (ic->x_pos) + 3;
+#endif
   uint8_t *pointer = NULL;
 
   assert(ic != NULL);
 
+  prt_line;
+  prt_var(ic->y_pos);
   for (uint8_t y = 8; y; --y) {
     pointer = base;
 
@@ -96,11 +116,17 @@ void tjpeg_image_chunk_copy_cr(tjpeg_image_chunk_t *ic, int16_t *destination)
 
 void tjpeg_image_chunk_copy_cb(tjpeg_image_chunk_t *ic, int16_t *destination)
 {
+#ifndef LIMITED_INPUT_BUFF
   uint8_t *base = ic->data + 2 * (ic->x_pos + ic->y_pos * ic->width) + 1;
+#else
+  uint8_t *base = ic->data + 2 * (ic->x_pos) + 1;
+#endif
   uint8_t *pointer = NULL;
 
   assert(ic != NULL);
 
+  prt_line;
+  prt_var(ic->y_pos);
   for (uint8_t y = 8; y; --y) {
     pointer = base;
 
